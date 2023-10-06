@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the Git repository
+                git branch: 'main', url: 'https://github.com/chxtan/react_django_demo_app.git'
+            }
+        }
+        
+        stage('Testing') {
+            steps {
+                // Add your testing steps here
+                sh "echo 'Running tests'"
+                // Replace the above line with actual testing commands
+            }
+        }
+        
+        stage('Docker Build') {
+            steps {
+                // Build the Docker image
+                script {
+                    sh "docker build --no-cache -t react_django_demo_app ."
+                }
+            }
+        }
+        
+        stage('Docker Run') {
+            steps {
+                // Run the Docker container
+                script {
+                    sh "docker run -p 8001:8001 -d react_django_demo_app"
+                }
+            }
+        }
+    }
+}
